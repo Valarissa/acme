@@ -7,6 +7,7 @@ defmodule AcmeWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug AcmeWeb.CurrentUser
   end
 
   pipeline :api do
@@ -15,6 +16,13 @@ defmodule AcmeWeb.Router do
 
   scope "/", AcmeWeb do
     pipe_through :browser # Use the default browser stack
+
+    get "/register", RegistrationController, :new
+    post "/register", RegistrationController, :create
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :create
+    delete "/logout", SessionController, :delete
 
     get "/", PageController, :index
   end
